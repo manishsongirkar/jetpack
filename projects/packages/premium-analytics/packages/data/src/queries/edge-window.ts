@@ -21,8 +21,9 @@ export function edgeWindow( params: Pick< ReportParams, 'from' | 'to' > ) {
 	return { start, end };
 }
 
-/** The most days the pre-aggregated table serves; the endpoint answers a longer range with a 400. */
+/** The most days each table serves; the endpoint answers a longer range with a 400. */
 export const EDGE_ROLLUP_MAX_DAYS = 366;
+export const EDGE_RAW_MAX_DAYS = 30;
 
 /**
  * Whether a report window is longer than the pre-aggregated table serves, so no request is worth sending.
