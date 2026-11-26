@@ -20,3 +20,21 @@ export function edgeWindow( params: Pick< ReportParams, 'from' | 'to' > ) {
 
 	return { start, end };
 }
+
+/** The most days the pre-aggregated table serves; the endpoint answers a longer range with a 400. */
+export const EDGE_ROLLUP_MAX_DAYS = 366;
+
+/**
+ * Whether a report window is longer than the pre-aggregated table serves, so no request is worth sending.
+ *
+ * @param params - The report window.
+ * @return True when the endpoint would refuse the range.
+ */
+export function isEdgeRollupRangeTooLong( params: Pick< ReportParams, 'from' | 'to' > ): boolean {
+	const { start, end } = edgeWindow( params );
+
+	return (
+		!! ( start && end ) &&
+		( Date.parse( end ) - Date.parse( start ) ) / 86400000 > EDGE_ROLLUP_MAX_DAYS
+	);
+}
